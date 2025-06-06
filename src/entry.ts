@@ -3,7 +3,7 @@ import { getDefaultLanguage } from "./i18n/getDefaultLanguage";
 import { getScriptDataAttribute } from "./utils/getScriptDataAttribute";
 import observeHTMLLang from "./utils/observeHTMLLang";
 
-function initialize() {
+export function initialize() {
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         document.removeEventListener('readystatechange', initialize);
 
