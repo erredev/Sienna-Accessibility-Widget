@@ -1,4 +1,4 @@
-import { changeLanguage } from "@/i18n/changeLanguage";
+import { changeLanguage } from "../i18n/changeLanguage";
 import { getDefaultLanguage } from "@/i18n/getDefaultLanguage";
 
 export default function observeHTMLLang() {
