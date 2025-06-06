@@ -1,6 +1,6 @@
-import addStylesheet from "@/utils/addStylesheet";
-import { generateCSSFromConfig } from "@/utils/cssGenerator"
-import { FILTERS } from "@/enum/Filters";
+import addStylesheet from "../utils/addStylesheet";
+import { generateCSSFromConfig } from "../utils/cssGenerator"
+import { FILTERS } from "../enum/Filters";
 
 export default function enableContrast(contrast) {
     const filter = FILTERS[contrast];

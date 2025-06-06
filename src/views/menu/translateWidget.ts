@@ -1,5 +1,5 @@
 import { t } from "../../i18n/translate";
-import { $widget } from "@/views/widget/widget";
+import { $widget } from "../widget/widget";
 
 function getTranslatedLabel(el: Element, defaultValue: string): string {
     const key = el.getAttribute("data-translate") || defaultValue;

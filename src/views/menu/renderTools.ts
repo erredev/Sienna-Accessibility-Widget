@@ -1,16 +1,16 @@
 import { 
     userSettings
-} from '@/globals/userSettings';
+} from '../../globals/userSettings';
 
-import stopAnimations from "@/tools/stopAnimations";
-import readableFont from "@/tools/readableFont";
-import bigCursor from "@/tools/bigCursor";
-import highlightTitle from "@/tools/highlightTitle";
-import readingGuide from "@/tools/readingGuide";
-import highlightLinks from "@/tools/highlightLinks";
-import adjustLetterSpacing from "@/tools/adjustLetterSpacing";
-import adjustLineHeight from "@/tools/adjustLineHeight";
-import adjustFontWeight from "@/tools/adjustFontWeight";
+import stopAnimations from "../../tools/stopAnimations";
+import readableFont from "../../tools/readableFont";
+import bigCursor from "../../tools/bigCursor";
+import highlightTitle from "../../tools/highlightTitle";
+import readingGuide from "../../tools/readingGuide";
+import highlightLinks from "../../tools/highlightLinks";
+import adjustLetterSpacing from "../../tools/adjustLetterSpacing";
+import adjustLineHeight from "../../tools/adjustLineHeight";
+import adjustFontWeight from "../../tools/adjustFontWeight";
 
 export default function renderTools() {
     const states = userSettings?.states;

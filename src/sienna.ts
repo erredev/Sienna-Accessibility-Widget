@@ -1,10 +1,10 @@
-import runAccessibility from "@/views/menu/runAccessibility";
-import { renderWidget } from "@/views/widget/widget"
+import runAccessibility from "./views/menu/runAccessibility";
+import { renderWidget } from "./views/widget/widget"
 
 import { 
     userSettings,
     getSavedUserSettings
-} from '@/globals/userSettings';
+} from './globals/userSettings';
 
 import {
     pluginConfig

@@ -14,8 +14,8 @@ import translateWidget from "./translateWidget";
 import { ILanguage, LANGUAGES } from "../../i18n/Languages";
 
 import css from "./menu.css";
-import enableContrast from "@/tools/enableContrast";
-import { pluginConfig } from "@/globals/pluginConfig";
+import enableContrast from "../../tools/enableContrast";
+import { pluginConfig } from "../../globals/pluginConfig";
 import { userSettings, saveUserState, setUserStateSettings, saveUserSettings } from "../../globals/userSettings";
 import { changeLanguage } from "../../i18n/changeLanguage"
 import toggleMenu from "./toggleMenu";

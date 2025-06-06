@@ -1,4 +1,4 @@
-import { saveUserSettings, userSettings } from "@/globals/userSettings";
+import { saveUserSettings, userSettings } from "../../globals/userSettings";
 import runAccessibility from "./runAccessibility";
 
 export default function reset() {

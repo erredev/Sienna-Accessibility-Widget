@@ -1,4 +1,4 @@
-import { getStorageData, saveStorageData } from "@/storage";
+import { getStorageData, saveStorageData } from "../storage";
 
 export let userSettings = {
   lang: undefined,

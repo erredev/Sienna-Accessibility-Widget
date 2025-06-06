@@ -1,10 +1,10 @@
 import {
     saveUserSettings,
     userSettings
-} from "@/globals/userSettings";
+} from "../globals/userSettings";
 import { LANGUAGES } from "./Languages";
-import translateWidget from "@/views/menu/translateWidget";
-import { $menu } from "@/views/menu/menu";
+import translateWidget from "../views/menu/translateWidget";
+import { $menu } from "../views/menu/menu";
 
 export function changeLanguage(newLang) {
     newLang = String(newLang || "").toLowerCase();

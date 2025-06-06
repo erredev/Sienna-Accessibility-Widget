@@ -6,7 +6,7 @@ import translateWidget from "../menu/translateWidget";
 
 import {
     pluginConfig
-} from "@/globals/pluginConfig";
+} from "../../globals/pluginConfig";
 
 export let $widget: HTMLElement;
 
