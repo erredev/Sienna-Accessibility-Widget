@@ -16,10 +16,10 @@ export function changeLanguage(newLang) {
     if (userSettings.lang !== newLang) {
         userSettings.lang = newLang;
 
-        const $lang = $menu.querySelector("#asw-language");
+/*        const $lang = $menu.querySelector("#asw-language");
         if ($lang) {
             $lang.value = newLang;
-        }
+        }*/
 
         translateWidget();
         saveUserSettings();
