@@ -2,8 +2,8 @@
   "name": "sienna-accessibility",
   "version": "2.0.0",
   "description": "Sienna: Accessibility Website Widget",
-  "main": "./dist/sienna.min.js",
-  "module": "./dist/sienna.min.js",
+  "main": "./src/entry.ts",
+  "module": "./src/entry.ts",
   "scripts": {
     "watch": "node esbuild.config.js --watch",
     "build": "node esbuild.config.js --minify"
