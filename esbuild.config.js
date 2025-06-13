@@ -12,7 +12,8 @@ async function build() {
     entryPoints: ['./src/entry.ts'],
     bundle: true,
     outfile: 'dist/sienna.min.js',
-    format: 'iife',
+    format: 'umd',
+    globalName: 'SiennaAccessibilityWidget',
     minify: isMinify,
     alias: {
       '@': './src',
@@ -25,11 +26,11 @@ async function build() {
       {
         name: "CSSMinifyPlugin",
         setup(build) {
-            build.onLoad({ filter: /\.css$/ }, async (args) => {
-              const file = fs.readFileSync(args.path, 'utf8');
-              const css = await esbuild.transform(file, { loader: "css", minify: true })
-              return { loader: "text", contents: css.code }
-            })
+          build.onLoad({ filter: /\.css$/ }, async (args) => {
+            const file = fs.readFileSync(args.path, 'utf8');
+            const css = await esbuild.transform(file, { loader: "css", minify: true })
+            return { loader: "text", contents: css.code }
+          })
         }
       },
       {

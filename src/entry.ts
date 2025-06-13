@@ -26,6 +26,7 @@ async function initialize() {
     }
 }
 
+
 function renderWidget() {
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         // Initialize if the script is appended to the DOM when document.readyState is completed
@@ -34,6 +35,10 @@ function renderWidget() {
         // Use readystatechange for async support
         document.addEventListener("readystatechange", initialize);
     }
+}
+
+if (typeof window !== 'undefined') {
+    (window as any).SiennaAccessibilityWidget = renderWidget;
 }
 
 export default renderWidget;
