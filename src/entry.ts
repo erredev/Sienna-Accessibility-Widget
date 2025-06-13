@@ -26,11 +26,14 @@ async function initialize() {
     }
 }
 
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    // Initialize if the script is appended to the DOM when document.readyState is completed
-    initialize();
-}else{
-    // Use readystatechange for async support
-    document.addEventListener("readystatechange", initialize);
+function renderWidget() {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        // Initialize if the script is appended to the DOM when document.readyState is completed
+        initialize();
+    }else{
+        // Use readystatechange for async support
+        document.addEventListener("readystatechange", initialize);
+    }
 }
 
+export default renderWidget;
