@@ -4,7 +4,7 @@ export let pluginConfig = {
   offset: [20, 20],
   size: 58,
   features: {
-    fontSize: true,
+    fontSize: false,
     zoom: true,
     contrast: true,
     // ...altre funzionalità
