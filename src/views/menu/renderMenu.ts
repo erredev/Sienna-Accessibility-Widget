@@ -167,6 +167,24 @@ export default function renderMenu() {
         });
     });
 
+    // Gestione visibilità card tramite config
+    if (!pluginConfig.features?.fontSize) {
+        const fontCard = $menu.querySelector('.asw-adjust-font')?.closest('.asw-card');
+        if (fontCard) fontCard.style.display = 'none';
+    }
+    if (!pluginConfig.features?.zoom) {
+        const zoomCard = $menu.querySelector('.asw-adjust-zoom')?.closest('.asw-card');
+        if (zoomCard) zoomCard.style.display = 'none';
+    }
+    if (!pluginConfig.features?.contrast) {
+        const contrastCard = $menu.querySelector('.asw-items.contrast')?.closest('.asw-card');
+        if (contrastCard) contrastCard.style.display = 'none';
+    }
+    if (!pluginConfig.features?.tools) {
+        const toolsCard = $menu.querySelector('.asw-items.tools')?.closest('.asw-card');
+        if (toolsCard) toolsCard.style.display = 'none';
+    }
+
     $widget.appendChild($container);
 
     return $container;
