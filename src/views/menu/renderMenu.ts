@@ -11,24 +11,24 @@ import renderTools from "./renderTools";
 import reset from "./reset";
 import translateWidget from "./translateWidget";
 
-import { ILanguage, LANGUAGES } from "../../i18n/Languages";
+import { LANGUAGES } from "../../i18n/Languages";
+import toggleMenu from "./toggleMenu";
+import { $widget } from "../widget/widget";
 
 import css from "./menu.css";
 import enableContrast from "@/tools/enableContrast";
 import { pluginConfig } from "@/globals/pluginConfig";
-import { userSettings, saveUserState, setUserStateSettings, saveUserSettings } from "@/globals/userSettings";
+import { userSettings, saveUserSettings } from "@/globals/userSettings";
 import { changeLanguage } from "@/i18n/changeLanguage";
-import toggleMenu from "./toggleMenu";
-import { $widget } from "../widget/widget";
 
 export default function renderMenu() {
     const $container: HTMLElement = document.createElement("div");
     $container.innerHTML = `<style>${css}</style>` + template;
 
-    const $menu = $container.querySelector(".asw-menu");
+    const $menu = $container.querySelector(".asw-menu") as HTMLElement;
     if (pluginConfig?.position?.includes("right")) {
-        $menu.style.right = '0px';
-        $menu.style.left = 'auto';
+        ($menu as HTMLElement).style.right = '0px';
+        ($menu as HTMLElement).style.left = 'auto';
     }
 
     $menu.querySelector(".content").innerHTML = renderButtons(ContentButtons);
@@ -41,20 +41,21 @@ export default function renderMenu() {
     }
 
     // *** States UI Rendering ***
-    const states = userSettings?.states;
-
-    const fontSize = Number(states?.fontSize) || 1;
-    if (fontSize != 1) {
-        $menu.querySelector(".asw-amount").innerHTML = `${fontSize * 100}%`;
+    interface MenuStates {
+        fontSize?: number;
+        zoom?: number;
+        contrast?: string | boolean;
+        [key: string]: any;
     }
-
-    if (states) {
-        const buttons = Array.from($menu.querySelectorAll('.asw-btn'));
-
+    const states: MenuStates = userSettings?.states ?? {};
+    // @ts-ignore
+    if (states && typeof states === 'object') {
+        const buttons = Array.from($menu.querySelectorAll('.asw-btn')) as HTMLElement[];
+        // @ts-ignore
         Object.entries(states).forEach(([key, value]) => {
             if (value && key !== "fontSize") {
                 const selector = key === "contrast" ? states[key] : key;
-                const btn = buttons.find(b => b.dataset.key === selector);
+                const btn = buttons.find(b => b.dataset && b.dataset.key === selector);
                 if (btn) btn.classList.add("asw-selected");
             }
         });
@@ -86,23 +87,20 @@ export default function renderMenu() {
     $menu.querySelectorAll(".asw-plus, .asw-minus").forEach((el: HTMLElement) => {
         el.addEventListener("click", () => {
             const difference = 0.1;
-
-            let fontSize = userSettings?.states?.fontSize || 1;
+            let fontSize = states.fontSize || 1;
             if (el.classList.contains('asw-minus')) {
                 fontSize -= difference;
             } else {
                 fontSize += difference;
             }
-
             fontSize = Math.max(fontSize, 0.1);
             fontSize = Math.min(fontSize, 2);
             fontSize = Number(fontSize.toFixed(2));
-
-            document.querySelector(".asw-amount").textContent = `${(fontSize * 100).toFixed(0)}%`;
-
+            const amountEl = getHTMLElement(".asw-amount");
+            if (amountEl) amountEl.textContent = `${(fontSize * 100).toFixed(0)}%`;
             adjustFontSize(fontSize);
-            userSettings.states.fontSize = fontSize;
-
+            states.fontSize = fontSize;
+            userSettings.states = states;
             saveUserSettings();
         });
     });
@@ -133,27 +131,24 @@ export default function renderMenu() {
         el.addEventListener("click", () => {
             const key = el.dataset.key;
             const isSelected = !el.classList.contains("asw-selected");
-            
             // --- Contrast ---
             if (el.classList.contains("asw-filter")) {
                 $menu.querySelectorAll(".asw-filter").forEach((el: HTMLElement) =>
                     el.classList.remove("asw-selected")
                 );
-
                 if (isSelected) {
                     el.classList.add("asw-selected");
                 }
-
-                userSettings.states.contrast = isSelected ? key : false;
-                enableContrast(userSettings.states.contrast);
-
+                states.contrast = isSelected ? key : false;
+                userSettings.states = states;
+                enableContrast(states.contrast);
+                saveUserSettings();
                 return;
             }
-            
             el.classList.toggle("asw-selected", isSelected);
-            userSettings.states[key] = isSelected;
+            states[key] = isSelected;
+            userSettings.states = states;
             renderTools();
-
             saveUserSettings();
         });
     });

@@ -6,8 +6,16 @@ import adjustFontSize from "@/tools/adjustFontSize";
 import renderTools from "./renderTools";
 import enableContrast from '@/tools/enableContrast';
 
+interface MenuStates {
+    fontSize?: number;
+    zoom?: number;
+    contrast?: string | boolean;
+    [key: string]: any;
+}
+
 export default function runAccessibility() {
-    adjustFontSize(userSettings?.fontSize);
+    const states: MenuStates = userSettings?.states ?? {};
+    adjustFontSize(states.fontSize);
     renderTools();
-    enableContrast(userSettings?.states?.contrast);
+    enableContrast(states.contrast);
 }
