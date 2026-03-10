@@ -35,6 +35,11 @@ export default function renderMenu() {
     $menu.querySelector(".tools").innerHTML = renderButtons(ToolButtons, 'asw-tools');
     $menu.querySelector(".contrast").innerHTML = renderButtons(FilterButtons, 'asw-filter');
 
+    // Utility per tipizzare HTMLElement
+    function getHTMLElement(sel: string): HTMLElement | null {
+        return $menu.querySelector(sel) as HTMLElement;
+    }
+
     // *** States UI Rendering ***
     const states = userSettings?.states;
 
@@ -102,6 +107,28 @@ export default function renderMenu() {
         });
     });
 
+    // Zoom page
+    $menu.querySelectorAll('.asw-plus[data-key="zoom"], .asw-minus[data-key="zoom"]').forEach((el: HTMLElement) => {
+        el.addEventListener('click', () => {
+            const difference = 0.1;
+            let zoom = states.zoom || 1;
+            if (el.classList.contains('asw-minus')) {
+                zoom -= difference;
+            } else {
+                zoom += difference;
+            }
+            zoom = Math.max(zoom, 0.1);
+            zoom = Math.min(zoom, 2);
+            zoom = Number(zoom.toFixed(2));
+            const zoomAmountEl = getHTMLElement('.asw-zoom-amount');
+            if (zoomAmountEl) zoomAmountEl.textContent = `${(zoom * 100).toFixed(0)}%`;
+            document.body.style.zoom = String(zoom);
+            states.zoom = zoom;
+            userSettings.states = states;
+            saveUserSettings();
+        });
+    });
+
     $menu.querySelectorAll(".asw-btn").forEach((el: HTMLElement) => {
         el.addEventListener("click", () => {
             const key = el.dataset.key;
@@ -130,6 +157,14 @@ export default function renderMenu() {
             saveUserSettings();
         });
     });
+
+    // Render blocco font size solo se attivo
+    const fontBlock = getHTMLElement(".asw-adjust-font");
+    if (fontBlock) fontBlock.style.display = pluginConfig.features.fontSize ? "" : "none";
+
+    // Render blocco zoom solo se attivo
+    const zoomBlock = getHTMLElement(".asw-adjust-zoom");
+    if (zoomBlock) zoomBlock.style.display = pluginConfig.features.zoom ? "" : "none";
 
     $widget.appendChild($container);
 
