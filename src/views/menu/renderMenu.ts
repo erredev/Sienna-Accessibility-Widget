@@ -31,9 +31,23 @@ export default function renderMenu() {
         $menu.style.left = 'auto';
     }
 
-    $menu.querySelector(".content").innerHTML = renderButtons(ContentButtons);
-    $menu.querySelector(".tools").innerHTML = renderButtons(ToolButtons, 'asw-tools');
-    $menu.querySelector(".contrast").innerHTML = renderButtons(FilterButtons, 'asw-filter');
+    // Rimuovo i vecchi blocchi non più presenti
+    // $menu.querySelector(".content").innerHTML = renderButtons(ContentButtons);
+    // $menu.querySelector(".tools").innerHTML = renderButtons(ToolButtons, 'asw-tools');
+    // $menu.querySelector(".contrast").innerHTML = renderButtons(FilterButtons, 'asw-filter');
+    // Se vuoi popolare le nuove card, usa querySelector sulle nuove classi
+    // Esempio:
+    // $menu.querySelector(".asw-items.tools").innerHTML = renderButtons(ToolButtons, 'asw-tools');
+    // $menu.querySelector(".asw-items.contrast").innerHTML = renderButtons(FilterButtons, 'asw-filter');
+
+    // Popolo le nuove card con i bottoni
+    $menu.querySelector(".asw-items.tools").innerHTML = renderButtons(ToolButtons, 'asw-tools');
+    $menu.querySelector(".asw-items.contrast").innerHTML = renderButtons(FilterButtons, 'asw-filter');
+
+    // Utility per tipizzare HTMLElement
+    function getHTMLElement(sel: string): HTMLElement | null {
+        return $menu.querySelector(sel) as HTMLElement;
+    }
 
     // *** States UI Rendering ***
     const states = userSettings?.states;
@@ -98,6 +112,28 @@ export default function renderMenu() {
             adjustFontSize(fontSize);
             userSettings.states.fontSize = fontSize;
 
+            saveUserSettings();
+        });
+    });
+
+    // Zoom page
+    $menu.querySelectorAll('.asw-plus[data-key="zoom"], .asw-minus[data-key="zoom"]').forEach((el: HTMLElement) => {
+        el.addEventListener('click', () => {
+            const difference = 0.1;
+            let zoom = states.zoom || 1;
+            if (el.classList.contains('asw-minus')) {
+                zoom -= difference;
+            } else {
+                zoom += difference;
+            }
+            zoom = Math.max(zoom, 0.1);
+            zoom = Math.min(zoom, 2);
+            zoom = Number(zoom.toFixed(2));
+            const zoomAmountEl = getHTMLElement('.asw-zoom-amount');
+            if (zoomAmountEl) zoomAmountEl.textContent = `${(zoom * 100).toFixed(0)}%`;
+            document.body.style.zoom = String(zoom);
+            states.zoom = zoom;
+            userSettings.states = states;
             saveUserSettings();
         });
     });
