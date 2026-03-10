@@ -16,7 +16,7 @@ import { ILanguage, LANGUAGES } from "../../i18n/Languages";
 import css from "./menu.css";
 import enableContrast from "@/tools/enableContrast";
 import { pluginConfig } from "@/globals/pluginConfig";
-import { userSettings, saveUserState, setUserStateSettings, saveUserSettings } from "@/globals/userSettings";
+import { userSettings, saveUserSettings } from "@/globals/userSettings";
 import { changeLanguage } from "@/i18n/changeLanguage";
 import toggleMenu from "./toggleMenu";
 import { $widget } from "../widget/widget";
@@ -50,20 +50,26 @@ export default function renderMenu() {
     }
 
     // *** States UI Rendering ***
-    const states = userSettings?.states;
+    interface MenuStates {
+        fontSize?: number;
+        zoom?: number;
+        contrast?: string | boolean;
+        [key: string]: any;
+    }
+    const states: MenuStates = userSettings?.states ?? {};
 
-    const fontSize = Number(states?.fontSize) || 1;
+    const fontSize = Number(states.fontSize) || 1;
     if (fontSize != 1) {
-        $menu.querySelector(".asw-amount").innerHTML = `${fontSize * 100}%`;
+        ($menu.querySelector(".asw-amount") as HTMLElement).innerHTML = `${fontSize * 100}%`;
     }
 
     if (states) {
-        const buttons = Array.from($menu.querySelectorAll('.asw-btn'));
+        const buttons = Array.from($menu.querySelectorAll('.asw-btn')) as HTMLElement[];
 
         Object.entries(states).forEach(([key, value]) => {
             if (value && key !== "fontSize") {
                 const selector = key === "contrast" ? states[key] : key;
-                const btn = buttons.find(b => b.dataset.key === selector);
+                const btn = buttons.find(b => b.dataset && b.dataset.key === selector);
                 if (btn) btn.classList.add("asw-selected");
             }
         });
@@ -96,7 +102,7 @@ export default function renderMenu() {
         el.addEventListener("click", () => {
             const difference = 0.1;
 
-            let fontSize = userSettings?.states?.fontSize || 1;
+            let fontSize = states.fontSize || 1;
             if (el.classList.contains('asw-minus')) {
                 fontSize -= difference;
             } else {
@@ -107,11 +113,12 @@ export default function renderMenu() {
             fontSize = Math.min(fontSize, 2);
             fontSize = Number(fontSize.toFixed(2));
 
-            document.querySelector(".asw-amount").textContent = `${(fontSize * 100).toFixed(0)}%`;
+            (document.querySelector(".asw-amount") as HTMLElement).textContent = `${(fontSize * 100).toFixed(0)}%`;
 
             adjustFontSize(fontSize);
-            userSettings.states.fontSize = fontSize;
+            states.fontSize = fontSize;
 
+            userSettings.states = states;
             saveUserSettings();
         });
     });
@@ -142,46 +149,43 @@ export default function renderMenu() {
         el.addEventListener("click", () => {
             const key = el.dataset.key;
             const isSelected = !el.classList.contains("asw-selected");
-            
             // --- Contrast ---
             if (el.classList.contains("asw-filter")) {
                 $menu.querySelectorAll(".asw-filter").forEach((el: HTMLElement) =>
                     el.classList.remove("asw-selected")
                 );
-
                 if (isSelected) {
                     el.classList.add("asw-selected");
                 }
-
-                userSettings.states.contrast = isSelected ? key : false;
-                enableContrast(userSettings.states.contrast);
-
+                states.contrast = isSelected ? key : false;
+                userSettings.states = states;
+                enableContrast(states.contrast);
+                saveUserSettings();
                 return;
             }
-            
             el.classList.toggle("asw-selected", isSelected);
-            userSettings.states[key] = isSelected;
+            states[key] = isSelected;
+            userSettings.states = states;
             renderTools();
-
             saveUserSettings();
         });
     });
 
     // Gestione visibilità card tramite config
     if (!pluginConfig.features?.fontSize) {
-        const fontCard = $menu.querySelector('.asw-adjust-font')?.closest('.asw-card');
+        const fontCard = ($menu.querySelector('.asw-adjust-font')?.closest('.asw-card')) as HTMLElement;
         if (fontCard) fontCard.style.display = 'none';
     }
     if (!pluginConfig.features?.zoom) {
-        const zoomCard = $menu.querySelector('.asw-adjust-zoom')?.closest('.asw-card');
+        const zoomCard = ($menu.querySelector('.asw-adjust-zoom')?.closest('.asw-card')) as HTMLElement;
         if (zoomCard) zoomCard.style.display = 'none';
     }
     if (!pluginConfig.features?.contrast) {
-        const contrastCard = $menu.querySelector('.asw-items.contrast')?.closest('.asw-card');
+        const contrastCard = ($menu.querySelector('.asw-items.contrast')?.closest('.asw-card')) as HTMLElement;
         if (contrastCard) contrastCard.style.display = 'none';
     }
     if (!pluginConfig.features?.tools) {
-        const toolsCard = $menu.querySelector('.asw-items.tools')?.closest('.asw-card');
+        const toolsCard = ($menu.querySelector('.asw-items.tools')?.closest('.asw-card')) as HTMLElement;
         if (toolsCard) toolsCard.style.display = 'none';
     }
 
