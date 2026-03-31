@@ -12,7 +12,13 @@ export const FILTERS: IFilters = {
             'fill': '#FFF',
             'background-color': '#000'
         },
-        childrenSelector: TEXT_SELECTORS
+        childrenSelector: TEXT_SELECTORS,
+        css: [
+            'html.aws-filter svg[fill="none"] { fill: none !important; }',
+            'html.aws-filter svg [fill]:not([fill="none"]):not([fill=""]) { fill: #FFF !important; }',
+            'html.aws-filter svg[stroke]:not([stroke="none"]):not([stroke=""]) { stroke: #FFF !important; }',
+            'html.aws-filter svg [stroke]:not([stroke="none"]):not([stroke=""]) { stroke: #FFF !important; }',
+        ].join(' ')
     },
     'light-contrast': {
         styles: {
@@ -20,7 +26,13 @@ export const FILTERS: IFilters = {
             'fill': '#000',
             'background-color': '#FFF'
         },
-        childrenSelector: TEXT_SELECTORS
+        childrenSelector: TEXT_SELECTORS,
+        css: [
+            'html.aws-filter svg[fill="none"] { fill: none !important; }',
+            'html.aws-filter svg [fill]:not([fill="none"]):not([fill=""]) { fill: #000 !important; }',
+            'html.aws-filter svg[stroke]:not([stroke="none"]):not([stroke=""]) { stroke: #000 !important; }',
+            'html.aws-filter svg [stroke]:not([stroke="none"]):not([stroke=""]) { stroke: #000 !important; }',
+        ].join(' ')
     },
     'high-contrast': {
         styles: {
